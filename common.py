@@ -10,7 +10,7 @@ import plotly.express as px
 
 def generate_df(**kwargs):
 
-    return df
+    pass
 
 
 ######################################################
@@ -47,3 +47,8 @@ def income_per_capita(df, year):
         margin={"r":0,"t":0,"l":0,"b":0}
     )
     fig.show()
+
+from base import BEA
+bea = BEA()
+x = bea.meta.get_available_data_sets()
+print(x)
