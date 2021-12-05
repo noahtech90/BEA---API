@@ -1,16 +1,23 @@
 import pandas as pd
+import requests
 from pprint import pprint
 from urllib.request import urlopen
 import plotly.graph_objects as go
+from settings import *
 import json
 import plotly.express as px
 
 
 def generate_df(**kwargs):
 
-    pass
+    return df
 
-def income_per_capital(year, df):
+
+######################################################
+################ Visuals ############################
+###################################################
+
+def income_per_capita(df, year):
     '''
     County view of income per capita in the US
 
@@ -29,8 +36,8 @@ def income_per_capital(year, df):
     df = clean_data(df)
 
     fig = px.choropleth(df, geojson=counties, locations='GeoFips', color='DataValue',
-                            color_continuous_scale="Viridis",
-                            range_color=(0, 110000),
+                            color_continuous_scale="greens",
+                            range_color=(0, 100000),
                             scope="usa",
                             labels={'inc':'income per capital'},
                             title='US Income Per Capita By County'
