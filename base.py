@@ -1,4 +1,4 @@
-from settings import BASE_URL, METHOD, api_key
+from settings import BASE_URL, METHOD, data_set_name, api_key
 import requests
 
 class BEA:
@@ -12,8 +12,20 @@ class BEA:
             super().__init__()
 
         def get_available_data_sets(self):
-            self.url += f'&METHOD={METHOD["datasets"]}'
-            print(self.url)
-            response = requests.get(self.url)
+            endpoint = self.url + f'&METHOD={METHOD["datasets"]}'
+            response = requests.get(endpoint)
             resp = response.json()
             return resp
+        
+        def get_available_parameters(self, dataset):
+            endpoint = self.url + f'&METHOD={METHOD["parameter_list"]}' + f'&DATASETNAME={dataset}'
+            response = requests.get(endpoint)
+            resp = response.json()
+            return resp
+        
+        def get_parameter_values(self, dataset, parameter_name):
+            endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={dataset}'+ f'&ParameterName={parameter_name}'
+            response = requests.get(endpoint)
+            resp = response.json()
+            return resp
+        

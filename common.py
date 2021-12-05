@@ -7,7 +7,6 @@ from settings import *
 import json
 import plotly.express as px
 
-
 def generate_df(**kwargs):
 
     pass
