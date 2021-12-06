@@ -56,6 +56,6 @@ class BEA:
             + f'&year={year}'
             + f'&frequency={freq}')
             response = requests.get(endpoint)
-            resp = response.json()
+            resp = response.json()['BEAAPI']['Results']['Data']
             return resp
         
