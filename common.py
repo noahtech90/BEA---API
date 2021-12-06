@@ -11,6 +11,11 @@ def generate_df(**kwargs):
 
     pass
 
+def clean_data(df):
+    df['DataValue'] = df['DataValue'].apply(lambda x: x.replace(",",""))
+    df['DataValue'] = df['DataValue'].apply(lambda x: x.replace("(NA)", "0"))
+    df['DataValue'] = df['DataValue'].astype('float')
+    return df
 
 ######################################################
 ################ Visuals ############################
