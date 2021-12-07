@@ -17,6 +17,61 @@ class BEA:
     def meta(self):
         meta = Meta()
         return meta
+    
+    @cached_property
+    def ni_underlying_detail(self):
+        ni_underlying_detail = NIUnderlyingDetail()
+        return ni_underlying_detail
+    
+    @cached_property
+    def mne(self):
+        mne = MNE()
+        return mne
+    
+    @cached_property
+    def fixed_assets(self):
+        fixed_assets = FixedAssets()
+        return fixed_assets
+    
+    @cached_property
+    def ita(self):
+        ita = ITA()
+        return ita
+    
+    @cached_property
+    def iip(self):
+        iip = IIP()
+        return iip
+    
+    @cached_property
+    def input_output(self):
+        input_output = InputOutput()
+        return input_output
+    
+    @cached_property
+    def intl_serv_trade(self):
+        intl_serv_trade = IntlServTrade()
+        return intl_serv_trade
+    
+    @cached_property
+    def gdp_by_industry(self):
+        gdp_by_industry = GDPbyIndustry()
+        return gdp_by_industry
+    
+    @cached_property
+    def regional(self):
+        regional = Regional()
+        return regional
+    
+    @cached_property
+    def underlying_gdp_by_industry(self):
+        underlying_gdp_by_industry = UnderlyingGDPbyIndustry()
+        return underlying_gdp_by_industry
+    
+    @cached_property
+    def api_dataset_meta_data(self):
+        api_dataset_meta_data = APIDatasetMetaData()
+        return api_dataset_meta_data
 
     def show_dataset_tables(self):
         if self.dataset is None:
