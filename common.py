@@ -34,7 +34,7 @@ def income_per_capita(df, year):
         df['DataValue'] = df['DataValue'].apply(lambda x: x.replace(",",""))
         df['DataValue'] = df['DataValue'].apply(lambda x: x.replace("(NA)", "0"))
         df['DataValue'] = df['DataValue'].astype('int')
-        df['DataValue'] = df['DataValue'].apply(lambda x: x * (1.0232)**(2020 - int(year_setting))) 
+        df['DataValue'] = df['DataValue'].apply(lambda x: x * (1.0232)**(2020 - int(year))) 
         return df
 
     df = clean_data(df)
@@ -52,7 +52,22 @@ def income_per_capita(df, year):
     )
     fig.show()
 
-from base import BEA
-bea = BEA()
-x = bea.meta.get_available_data_sets()
-print(x)
+def private_investment_us(bea):
+    columns = pd.DataFrame(bea.nipa.access_table_data(
+        table_id='T50203', 
+        freq='A', 
+        year=1995)).columns
+
+
+    gross_domestic_investment =  pd.DataFrame(columns=columns)
+    year_range = range(1940, 2020)
+
+    for year in year_range:
+        df = pd.DataFrame(bea.nipa.access_table_data(
+            table_id='T50203', 
+            freq='A', 
+            year=year)).iloc[0]
+        gross_domestic_investment = gross_domestic_investment.append(df)
+    gross_domestic_investment = clean_data(gross_domestic_investment)
+    gross_domestic_investment = gross_domestic_investment.rename(columns={'DataValue': 'Investment', 'TimePeriod': 'Year'})
+    gross_domestic_investment.plot.line(x='Year', y='Investment')

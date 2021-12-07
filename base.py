@@ -1,23 +1,16 @@
 from settings import BASE_URL, METHOD, data_set_name, api_key
-import requests
+import requests    
 
 
 class BEA:
     def __init__(self):
         self.url = BASE_URL
-        self.dataset = None
         self.meta = self.Meta(self.url)
         self.nipa = self.NIPA(self.url)
     
-    def show_dataset_tables(self):
-        if self.dataset is None:
-            return 'Method Not Allowed with this Dataset'
-        endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TableID"}'
-        response = requests.get(endpoint)
-        resp = response.json()
-        return resp
 
-    class Meta():
+
+    class Meta:
         '''
         Used for obtaining meta data on all BEA Data tables
         '''
@@ -73,5 +66,12 @@ class BEA:
             resp = response.json()['BEAAPI']['Results']['Data']
             return resp
         
+        def show_dataset_tables(self):
+            if self.dataset is None:
+                return 'Method Not Allowed with this Dataset'
+            endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TableID"}'
+            response = requests.get(endpoint)
+            resp = response.json()
+            return resp
 
         
