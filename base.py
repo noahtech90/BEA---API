@@ -80,3 +80,90 @@ class NIPA(BEA):
         resp = response.json()['BEAAPI']['Results']['Data']
         return resp
 
+class NIUnderlyingDetail(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'NIUnderlyingDetail'
+
+class MNE(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'MNE'
+
+class FixedAssets(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'FixedAssets'
+
+class ITA(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'ITA'
+
+class IIP(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'IIP'
+
+class InputOutput(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'InputOutput'
+
+class IntlServTrade(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'IntlServTrade'
+
+class GDPbyIndustry(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'GDPbyIndustry'
+
+class Regional(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'Regional'
+
+class UnderlyingGDPbyIndustry(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'UnderlyingGDPbyIndustry'
+
+class APIDatasetMetaData(BEA):
+    '''
+    some crap
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'APIDatasetMetaData'
