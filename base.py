@@ -13,7 +13,12 @@ class BEA:
             return 'Method Not Allowed with this Dataset'
         endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TableID"}'
         response = requests.get(endpoint)
-        resp = response.json()['BEAAPI']['Results']['ParamValue']
+        try:
+            resp = response.json()['BEAAPI']['Results']['ParamValue']
+        except:
+            endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TableName"}'
+            response = requests.get(endpoint)  
+            resp = response.json()['BEAAPI']['Results']['ParamValue']       
         return resp
 
     @cached_property
@@ -167,14 +172,6 @@ class UnderlyingGDPbyIndustry(BEA):
         super().__init__()
         self.dataset = 'UnderlyingGDPbyIndustry'
 
-class APIDatasetMetaData(BEA):
-    '''
-    issue with table method
-    '''
-    def __init__(self):
-        super().__init__()
-        self.dataset = 'APIDatasetMetaData'
-
 class Regional(BEA):
     '''
     issue with table method
@@ -182,6 +179,14 @@ class Regional(BEA):
     def __init__(self):
         super().__init__()
         self.dataset = 'Regional'
+
+class APIDatasetMetaData(BEA):
+    '''
+    issue with table method
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'APIDatasetMetaData'
 
 class IntlServTrade(BEA):
     '''
