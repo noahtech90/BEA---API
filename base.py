@@ -7,7 +7,15 @@ class BEA:
     def __init__(self):
         self.url = BASE_URL
         self.dataset = None
-    
+
+    def show_dataset_tables(self):
+        if self.dataset is None:
+            return 'Method Not Allowed with this Dataset'
+        endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TableID"}'
+        response = requests.get(endpoint)
+        resp = response.json()['BEAAPI']['Results']['ParamValue']
+        return resp
+
     @cached_property
     def nipa(self):
         nipa = NIPA()
@@ -73,14 +81,6 @@ class BEA:
         api_dataset_meta_data = APIDatasetMetaData()
         return api_dataset_meta_data
 
-    def show_dataset_tables(self):
-        if self.dataset is None:
-            return 'Method Not Allowed with this Dataset'
-        endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TableID"}'
-        response = requests.get(endpoint)
-        resp = response.json()['BEAAPI']['Results']['ParamValue']
-        return resp
-
 class Meta(BEA):
     '''
     Used for obtaining meta data on all BEA Data tables
@@ -145,7 +145,7 @@ class NIUnderlyingDetail(BEA):
 
 class MNE(BEA):
     '''
-    some crap
+    issue with table method
     '''
     def __init__(self):
         super().__init__()
@@ -153,7 +153,7 @@ class MNE(BEA):
 
 class FixedAssets(BEA):
     '''
-    some crap
+    issue with table method
     '''
     def __init__(self):
         super().__init__()
@@ -161,7 +161,7 @@ class FixedAssets(BEA):
 
 class ITA(BEA):
     '''
-    some crap
+    issue with table method
     '''
     def __init__(self):
         super().__init__()
@@ -169,7 +169,7 @@ class ITA(BEA):
 
 class IIP(BEA):
     '''
-    some crap
+    issue with table method
     '''
     def __init__(self):
         super().__init__()
