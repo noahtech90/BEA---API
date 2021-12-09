@@ -180,22 +180,6 @@ class Regional(BEA):
         super().__init__()
         self.dataset = 'Regional'
 
-class APIDatasetMetaData(BEA):
-    '''
-    issue with table method
-    '''
-    def __init__(self):
-        super().__init__()
-        self.dataset = 'APIDatasetMetaData'
-
-class IntlServTrade(BEA):
-    '''
-    issue with table method
-    '''
-    def __init__(self):
-        super().__init__()
-        self.dataset = 'IntlServTrade'
-
 class FixedAssets(BEA):
     '''
     issue with table method
@@ -227,3 +211,21 @@ class MNE(BEA):
     def __init__(self):
         super().__init__()
         self.dataset = 'MNE'
+
+class IntlServTrade(BEA):
+    '''
+    issue with table method
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'IntlServTrade'
+
+
+
+class APIDatasetMetaData(BEA):
+    '''
+    issue with table method
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'APIDatasetMetaData'
