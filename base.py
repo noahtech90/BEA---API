@@ -196,14 +196,6 @@ class IntlServTrade(BEA):
         super().__init__()
         self.dataset = 'IntlServTrade'
 
-class MNE(BEA):
-    '''
-    issue with table method
-    '''
-    def __init__(self):
-        super().__init__()
-        self.dataset = 'MNE'
-
 class FixedAssets(BEA):
     '''
     issue with table method
@@ -227,3 +219,11 @@ class IIP(BEA):
     def __init__(self):
         super().__init__()
         self.dataset = 'IIP'
+
+class MNE(BEA):
+    '''
+    issue with table method
+    '''
+    def __init__(self):
+        super().__init__()
+        self.dataset = 'MNE'
