@@ -1,3 +1,4 @@
+from numpy import double
 import pandas as pd
 import requests
 from pprint import pprint
@@ -11,46 +12,33 @@ def generate_df(**kwargs):
 
     pass
 
+def time_frame(range_num = 10):
+    '''
+    function to return range of numbers for 
+    '''
+    year_range = range(CURRENT_YEAR - range_num, CURRENT_YEAR)
+    return year_range
+
 def clean_data(df):
     df['DataValue'] = df['DataValue'].apply(lambda x: x.replace(",",""))
     df['DataValue'] = df['DataValue'].apply(lambda x: x.replace("(NA)", "0"))
     df['DataValue'] = df['DataValue'].astype('float')
     return df
 
-######################################################
-################ Visuals ############################
-###################################################
-
-def income_per_capita(df, year):
+def time_frame_data(db_object, table_id, years):
     '''
-    County view of income per capita in the US
-
-    data available starting around 1990???
+    access data over period of times
     '''
-    with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
-        counties = json.load(response)
-
-    def clean_data(df):
-        df['DataValue'] = df['DataValue'].apply(lambda x: x.replace(",",""))
-        df['DataValue'] = df['DataValue'].apply(lambda x: x.replace("(NA)", "0"))
-        df['DataValue'] = df['DataValue'].astype('int')
-        df['DataValue'] = df['DataValue'].apply(lambda x: x * (1.0232)**(2020 - int(year))) 
-        return df
-
+    years = time_frame(years)
+    df_cols = pd.DataFrame(db_object.access_table(table_id)).columns
+    df = pd.DataFrame(columns=df_cols)
+    for year in years:
+        year_df = pd.DataFrame(db_object.nipa.access_table(table_id, year=year)).iloc[0]
+        df = df.append(year_df)
     df = clean_data(df)
+    return df
 
-    fig = px.choropleth(df, geojson=counties, locations='GeoFips', color='DataValue',
-                            color_continuous_scale="greens",
-                            range_color=(0, 100000),
-                            scope="usa",
-                            labels={'inc':'income per capital'},
-                            title='US Income Per Capita By County'
-                            )
-    fig.update_layout(
-        geo_scope='usa', # limite map scope to USA
-        margin={"r":0,"t":0,"l":0,"b":0}
-    )
-    fig.show()
+################ Visuals ############################
 
 def private_investment_us(bea):
     columns = pd.DataFrame(bea.nipa.access_table_data(
@@ -60,7 +48,7 @@ def private_investment_us(bea):
 
 
     gross_domestic_investment =  pd.DataFrame(columns=columns)
-    year_range = range(1940, 2020)
+    year_range = time_frame()
 
     for year in year_range:
         df = pd.DataFrame(bea.nipa.access_table_data(

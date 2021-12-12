@@ -1,13 +1,35 @@
 from settings import BASE_URL, CURRENT_YEAR, METHOD, data_set_name, api_key
-from cached_property import cached_property
-import requests    
+from cached_property import cached_property 
+import pandas as pd
+import requests
+from urllib.request import urlopen
+import plotly.graph_objects as go
+from settings import *
+import json
+import plotly.express as px
 
 class BEA:
     def __init__(self):
         self.url = BASE_URL
         self.dataset = None
 
-    def show_dataset_tables(self):
+    def access_table(self, table_id, freq='A', year=2020):
+        '''
+        acessing table data for given dataset
+        '''
+        endpoint = (self.url
+        + f'&METHOD={METHOD["get_data"]}'
+        + f'&DATASETNAME={self.dataset}'+ f'&TableName={table_id}'
+        + f'&year={year}'
+        + f'&frequency={freq}')
+        response = requests.get(endpoint)
+        resp = response.json()['BEAAPI']['Results']['Data']
+        return resp
+
+    def show_tables(self):
+        '''
+        show list of tables tied to given datasaet
+        '''
         if self.dataset is None:
             return 'Method Not Allowed with this Dataset'
         endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TableID"}'
@@ -20,13 +42,6 @@ class BEA:
             resp = response.json()['BEAAPI']['Results']['ParamValue']       
         return resp
 
-    def _return_time_frame(range_num = 10):
-        '''
-        function to return range of numbers for 
-        '''
-        year_range = range(CURRENT_YEAR - range_num, CURRENT_YEAR)
-        return year_range
-    
     ################### Cached Properties #######################
     @cached_property
     def nipa(self):
@@ -114,15 +129,36 @@ class NIPA(BEA):
         super().__init__()
         self.dataset = 'NIPA'
 
-    def access_table_data(self, table_id, freq='A', year=2020):
-        endpoint = (self.url
-        + f'&METHOD={METHOD["get_data"]}'
-        + f'&DATASETNAME={self.dataset}'+ f'&TableName={table_id}'
-        + f'&year={year}'
-        + f'&frequency={freq}')
-        response = requests.get(endpoint)
-        resp = response.json()['BEAAPI']['Results']['Data']
-        return resp
+    def income_per_capita(df, year):
+        '''
+        County view of income per capita in the US
+
+        data available starting around 1990???
+        '''
+        with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
+            counties = json.load(response)
+
+        def clean_data(df):
+            df['DataValue'] = df['DataValue'].apply(lambda x: x.replace(",",""))
+            df['DataValue'] = df['DataValue'].apply(lambda x: x.replace("(NA)", "0"))
+            df['DataValue'] = df['DataValue'].astype('int')
+            df['DataValue'] = df['DataValue'].apply(lambda x: x * (1.0232)**(2020 - int(year))) 
+            return df
+
+        df = clean_data(df)
+
+        fig = px.choropleth(df, geojson=counties, locations='GeoFips', color='DataValue',
+                                color_continuous_scale="greens",
+                                range_color=(0, 100000),
+                                scope="usa",
+                                labels={'inc':'income per capital'},
+                                title='US Income Per Capita By County'
+                                )
+        fig.update_layout(
+            geo_scope='usa', # limite map scope to USA
+            margin={"r":0,"t":0,"l":0,"b":0}
+        )
+        fig.show()
 
 class NIUnderlyingDetail(BEA):
     '''
