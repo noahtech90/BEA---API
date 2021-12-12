@@ -1,7 +1,7 @@
 from settings import BASE_URL, METHOD, data_set_name, api_key
 from cached_property import cached_property
 import requests    
-
+from .meta import Meta
 
 class BEA:
     def __init__(self):
@@ -20,7 +20,8 @@ class BEA:
             response = requests.get(endpoint)  
             resp = response.json()['BEAAPI']['Results']['ParamValue']       
         return resp
-
+    
+    ################### Cached Properties #######################
     @cached_property
     def nipa(self):
         nipa = NIPA()
@@ -85,32 +86,9 @@ class BEA:
     def api_dataset_meta_data(self):
         api_dataset_meta_data = APIDatasetMetaData()
         return api_dataset_meta_data
+    
+    ################### Cached Properties #######################
 
-class Meta(BEA):
-    '''
-    Used for obtaining meta data on all BEA Data tables
-    '''
-    def __init__(self):
-        super().__init__()
-
-    def get_available_data_sets(self):
-        endpoint = self.url + f'&METHOD={METHOD["datasets"]}'
-        response = requests.get(endpoint)
-        resp = response.json()
-        return resp
-    
-    def get_available_parameters(self, dataset):
-        endpoint = self.url + f'&METHOD={METHOD["parameter_list"]}' + f'&DATASETNAME={dataset}'
-        response = requests.get(endpoint)
-        resp = response.json()
-        return resp
-    
-    def get_parameter_values(self, dataset, parameter_name):
-        endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={dataset}'+ f'&ParameterName={parameter_name}'
-        response = requests.get(endpoint)
-        resp = response.json()
-        return resp
-    
 class NIPA(BEA):
     '''
     GDP, Income, and Saving tables

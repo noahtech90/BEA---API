@@ -1,4 +1,4 @@
-from base import BEA, Meta, NIPA
+from models.base import BEA, Meta, NIPA
 from pprint import pprint
 
 bea = BEA()
