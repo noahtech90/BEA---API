@@ -2,6 +2,7 @@ import os
 import pandas as pd
 
 api_key = os.environ.get('bea_key', None)
+CURRENT_YEAR = 2021
 BASE_URL = f'https://apps.bea.gov/api/data?'+ f'&USERID={api_key}'
 
 METHOD = {'none': None, 
@@ -24,6 +25,7 @@ line_code = [None, '30']
 parameter_name = [None, 'Frequency', 'Year', 'Industry', 'TableId', 'TableName']
 target_parameter = [None, 'LINECODE&TABLENAME', 'TableName']
 result_format = [None,'JSON']
+
 
 '''
 base_url = (f'https://apps.bea.gov/api/data?'
