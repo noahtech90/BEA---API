@@ -130,7 +130,7 @@ class NIPA(BEA):
         super().__init__()
         self.dataset = 'NIPA'
 
-    def access_table_data(self, table_id, freq, year):
+    def access_table_data(self, table_id, freq='Y', year=2020):
         endpoint = (self.url
         + f'&METHOD={METHOD["get_data"]}'
         + f'&DATASETNAME={self.dataset}'+ f'&TableName={table_id}'
