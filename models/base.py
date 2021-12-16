@@ -13,7 +13,7 @@ class BEA:
         self.url = BASE_URL
         self.dataset = None
 
-    def access_table(self, table_id, freq='A', year=2020, format='result'):
+    def access_table(self, table_id, freq='A', year=2020):
         '''
         acessing table data for given dataset
         '''
@@ -23,11 +23,10 @@ class BEA:
         + f'&year={year}'
         + f'&frequency={freq}')
         response = requests.get(endpoint)
-        if format ==  'result':
-            resp = response.json()['BEAAPI']['Results']['Data']
-        else:
-            resp =  response
-        return resp
+        try:
+            return response.json()['BEAAPI']['Results']['Data']
+        except:
+            return response
 
     def show_tables(self):
         '''

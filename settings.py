@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 api_key = os.environ.get('bea_key', None)
-CURRENT_YEAR = 2021
+CURRENT_YEAR = 2020
 BASE_URL = f'https://apps.bea.gov/api/data?'+ f'&USERID={api_key}'
 
 METHOD = {'none': None, 

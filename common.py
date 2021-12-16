@@ -25,7 +25,7 @@ def clean_data(df):
     df['DataValue'] = df['DataValue'].astype('float')
     return df
 
-def time_frame_data(db_object, table_id, years, freq='A'):
+def time_frame_data(db_object, table_id, years, freq='A', iloc=0):
     '''
     access data over period of times
     '''
