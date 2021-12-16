@@ -25,7 +25,7 @@ def clean_data(df):
     df['DataValue'] = df['DataValue'].astype('float')
     return df
 
-def time_frame_data(db_object, table_id, years):
+def time_frame_data(db_object, table_id, years, freq='A'):
     '''
     access data over period of times
     '''
@@ -33,7 +33,7 @@ def time_frame_data(db_object, table_id, years):
     df_cols = pd.DataFrame(db_object.access_table(table_id)).columns
     df = pd.DataFrame(columns=df_cols)
     for year in years:
-        year_df = pd.DataFrame(db_object.nipa.access_table(table_id, year=year)).iloc[0]
+        year_df = pd.DataFrame(db_object.access_table(table_id, year=year, freq=freq)).iloc[0]
         df = df.append(year_df)
     df = clean_data(df)
     return df
