@@ -47,6 +47,7 @@ class BEA:
             resp = response.json()['BEAAPI']['Results']['ParamValue']       
         return resp
 
+
     ################### Cached Properties #######################
     @cached_property
     def nipa(self):
@@ -196,13 +197,16 @@ class Regional(BEA):
         super().__init__()
         self.dataset = 'Regional'
 
-    def access_table(self, table_id, freq='A', year=2020, GeoFips='county'):
+    def access_table(self, table_id, freq='A', year=2020, geo_fips='county', line_code=20):
         '''
         acessing table data for given dataset
         '''
         endpoint = (self.url
         + f'&METHOD={METHOD["get_data"]}'
-        + f'&DATASETNAME={self.dataset}'+ f'&TableName={table_id}'
+        + f'&DATASETNAME={self.dataset}'
+        + f'&TableName={table_id}'
+        + f'&GeoFips={geo_fips}'
+        + f'&LineCode={line_code}'
         + f'&year={year}'
         + f'&frequency={freq}')
         response = requests.get(endpoint)

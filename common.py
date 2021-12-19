@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 from settings import *
 import json
 import plotly.express as px
+import re
 
 def generate_df(**kwargs):
 
@@ -59,3 +60,29 @@ def private_investment_us(bea):
     gross_domestic_investment = clean_data(gross_domestic_investment)
     gross_domestic_investment = gross_domestic_investment.rename(columns={'DataValue': 'Investment', 'TimePeriod': 'Year'})
     gross_domestic_investment.plot.line(x='Year', y='Investment')
+
+def county_chloropleth(df):
+    with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
+        counties = json.load(response)
+
+    fig = px.choropleth(df, geojson=counties, locations='GeoFips', color='DataValue',
+                            color_continuous_scale="greens",
+                            range_color=(0, 130000),
+                            scope="usa",
+                            )
+    fig.update_layout(
+        geo_scope='usa', # limit map scope to USA
+        margin={"r":0,"t":0,"l":0,"b":0}
+        )
+    fig.show()
+
+
+############################## Utility #################
+def convert_snake_case(string):
+    '''
+    convert given string to snake case syntax
+
+    TODO: This is not workiing splitting string like "gdp" to g_d_p
+    '''
+    string = re.sub(r'(?<!^)(?=[A-Z])', '_', string).lower()
+    return string
