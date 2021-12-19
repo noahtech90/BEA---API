@@ -9,6 +9,9 @@ import json
 import plotly.express as px
 
 class BEA:
+    '''
+    base class all datasets inherit from
+    '''
     def __init__(self):
         self.url = BASE_URL
         self.dataset = None
@@ -115,15 +118,6 @@ class BEA:
 class NIPA(BEA):
     '''
     GDP, Income, and Saving tables
-
-    Gross domestic product (GDP)
-    Gross domestic income (GDI)
-    National income
-    Corporate profits
-    Government receipts and expenditures
-    Personal income and disposable personal income
-    Personal consumption expenditures (PCE), or consumer spending
-    Personal saving
 
     T50203 - saving and investment by sector
     '''

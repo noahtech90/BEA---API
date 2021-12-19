@@ -33,7 +33,7 @@ def time_frame_data(db_object, table_id, years, freq='A', iloc=0):
     df_cols = pd.DataFrame(db_object.access_table(table_id)).columns
     df = pd.DataFrame(columns=df_cols)
     for year in years:
-        year_df = pd.DataFrame(db_object.access_table(table_id, year=year, freq=freq)).iloc[0]
+        year_df = pd.DataFrame(db_object.access_table(table_id, year=year, freq=freq)).iloc[iloc]
         df = df.append(year_df)
     df = clean_data(df)
     return df
