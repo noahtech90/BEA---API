@@ -196,6 +196,21 @@ class Regional(BEA):
         super().__init__()
         self.dataset = 'Regional'
 
+    def access_table(self, table_id, freq='A', year=2020, GeoFips='county'):
+        '''
+        acessing table data for given dataset
+        '''
+        endpoint = (self.url
+        + f'&METHOD={METHOD["get_data"]}'
+        + f'&DATASETNAME={self.dataset}'+ f'&TableName={table_id}'
+        + f'&year={year}'
+        + f'&frequency={freq}')
+        response = requests.get(endpoint)
+        try:
+            return response.json()['BEAAPI']['Results']['Data']
+        except:
+            return response
+
 class FixedAssets(BEA):
     '''
     issue with table method
