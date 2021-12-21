@@ -76,6 +76,21 @@ def county_chloropleth(df):
         )
     fig.show()
 
+def state_choropleth(df):
+    fig = go.Figure(data=go.Choropleth(
+        locations=df['code'], # Spatial coordinates
+        z = df['total exports'].astype(float), # Data to be color-coded
+        locationmode = 'USA-states', # set of locations match entries in `locations`
+        colorscale = 'Reds',
+        colorbar_title = "Millions USD",
+    ))
+
+    fig.update_layout(
+        title_text = '2011 US Agriculture Exports by State',
+        geo_scope='usa', # limite map scope to USA
+    )
+
+    fig.show()
 
 ############################## Utility #################
 def convert_snake_case(string):
