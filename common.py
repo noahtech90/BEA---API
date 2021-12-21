@@ -1,6 +1,5 @@
-from numpy import double
+
 import pandas as pd
-import requests
 from pprint import pprint
 from urllib.request import urlopen
 import plotly.graph_objects as go
@@ -8,10 +7,6 @@ from settings import *
 import json
 import plotly.express as px
 import re
-
-def generate_df(**kwargs):
-
-    pass
 
 def time_frame(range_num = 10):
     '''
@@ -77,6 +72,19 @@ def county_chloropleth(df):
     fig.show()
 
 def state_choropleth(df):
+    '''
+    clean choropleth data and return graph
+    '''
+    # filter down to first quarter if data split quarterly
+    df = df[df['TimePeriod'].str[-2:] == 'Q1']
+    if len(df) > 0:
+        df = df[df['TimePeriod'].str[-2:] == 'Q1']
+        df['TimePeriod'] = df['TimePeriod'].str[:-2]
+        df = clean_data(df)
+        df = df[1:-8]
+    
+    # Map State Names to Short Hand Code
+    df['Code'] = df['GeoName'].map(code)
     fig = px.choropleth(df,
                         locations='Code',
                         color='DataValue',
