@@ -47,6 +47,21 @@ class BEA:
             resp = response.json()['BEAAPI']['Results']['ParamValue']       
         return resp
 
+    def get_available_parameters(self):
+        endpoint = self.url + f'&METHOD={METHOD["parameter_list"]}' + f'&DATASETNAME={self.dataset}'
+        response = requests.get(endpoint)
+        resp = response.json()
+        return resp
+    
+    def get_parameter_values(self, table_id, parameter_name):
+        endpoint = (self.url 
+        + f'&METHOD={METHOD["parameter_value_filt"]}' 
+        + f'&TableName={table_id}' 
+        + f'&DATASETNAME={self.dataset}'
+        + f'&TargetParameter={parameter_name}')
+        response = requests.get(endpoint)
+        resp = response.json()['BEAAPI']['Results']['ParamValue']
+        return resp
 
     ################### Cached Properties #######################
     @cached_property
@@ -274,18 +289,6 @@ class Meta(BEA):
 
     def get_available_data_sets(self):
         endpoint = self.url + f'&METHOD={METHOD["datasets"]}'
-        response = requests.get(endpoint)
-        resp = response.json()
-        return resp
-    
-    def get_available_parameters(self, dataset):
-        endpoint = self.url + f'&METHOD={METHOD["parameter_list"]}' + f'&DATASETNAME={dataset}'
-        response = requests.get(endpoint)
-        resp = response.json()
-        return resp
-    
-    def get_parameter_values(self, dataset, parameter_name):
-        endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={dataset}'+ f'&ParameterName={parameter_name}'
         response = requests.get(endpoint)
         resp = response.json()
         return resp
