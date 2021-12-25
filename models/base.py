@@ -44,7 +44,10 @@ class BEA:
         except:
             endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TableName"}'
             response = requests.get(endpoint)  
-            resp = response.json()['BEAAPI']['Results']['ParamValue']       
+            try:
+                resp = response.json()['BEAAPI']['Results']['ParamValue'] 
+            except:
+                resp = response
         return resp
 
     def get_available_parameters(self):
@@ -60,7 +63,7 @@ class BEA:
         + f'&DATASETNAME={self.dataset}'
         + f'&TargetParameter={parameter_name}')
         response = requests.get(endpoint)
-        resp = response.json()['BEAAPI']['Results']['ParamValue']
+        resp = response.json()['BEAAPI']['Results']
         return resp
 
     ################### Cached Properties #######################

@@ -62,7 +62,7 @@ def county_chloropleth(df):
 
     fig = px.choropleth(df, geojson=counties, locations='GeoFips', color='DataValue',
                             color_continuous_scale="greens",
-                            range_color=(0, 130000),
+                            range_color=(0, 3000000),
                             scope="usa",
                             )
     fig.update_layout(
