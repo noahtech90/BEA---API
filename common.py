@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from settings import *
 import json
 import plotly.express as px
-import re
+from re import sub
 
 def time_frame(range_num = 10):
     '''
@@ -105,14 +105,24 @@ def state_choropleth(df):
     fig.show()
 
 ############################## Utility #################
-def convert_snake_case(string):
+def convert_snake_case(s):
     '''
     convert given string to snake case syntax
 
     TODO: This is not workiing splitting string like "gdp" to g_d_p
     '''
-    string = re.sub(r'(?<!^)(?=[A-Z])', '_', string).lower()
-    return string
+    return '_'.join(
+    sub('([A-Z][a-z]+)', r' \1',
+    sub('([A-Z]+)', r' \1',
+    s.replace('-', ' '))).split()).lower()
+
+def convert_dataset_to_method(df):
+    '''
+    takes in dataset name response and converts to method
+    '''
+    df['DatasetName'] = df['DatasetName'].apply(lambda x: convert_snake_case(x))
+    df['DatasetName'] = df['DatasetName'].str.replace('gd_p', 'gdp_')
+    return df
 
 def to_df(data):
     '''
