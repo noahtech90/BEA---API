@@ -57,12 +57,20 @@ def private_investment_us(bea):
     gross_domestic_investment.plot.line(x='Year', y='Investment')
 
 def county_chloropleth(df):
+    '''
+    creates chloropleth mapping for county data
+
+    color scale determined by min and max values available
+    '''
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
         counties = json.load(response)
+    
+    min_value = df['DataValue'].min()
+    max_value = df['DataValue'].max() * .8
 
     fig = px.choropleth(df, geojson=counties, locations='GeoFips', color='DataValue',
                             color_continuous_scale="greens",
-                            range_color=(0, 3000000),
+                            range_color=(min_value, max_value),
                             scope="usa",
                             )
     fig.update_layout(
