@@ -127,11 +127,6 @@ class BEA:
         underlying_gdp_by_industry = UnderlyingGDPbyIndustry()
         return underlying_gdp_by_industry
     
-    @cached_property
-    def api_dataset_meta_data(self):
-        api_dataset_meta_data = APIDatasetMetaData()
-        return api_dataset_meta_data
-    
     ################### Cached Properties #######################
 
 class NIPA(BEA):
@@ -304,16 +299,6 @@ class IntlServTrade(BEA):
         except:
             resp = response
         return resp
-
-
-
-class APIDatasetMetaData(BEA):
-    '''
-    issue with table method
-    '''
-    def __init__(self):
-        super().__init__()
-        self.dataset = 'APIDatasetMetaData'
 
 class Meta(BEA):
     '''
