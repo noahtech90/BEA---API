@@ -249,6 +249,12 @@ class ITA(BEA):
         super().__init__()
         self.dataset = 'ITA'
 
+    def show_tables(self):
+        '''
+        show list of tables tied to given datasaet
+        '''
+        return pd.DataFrame([{'table': 'One Table Available'}])
+
 class IIP(BEA):
     '''
     issue with table method
@@ -256,6 +262,12 @@ class IIP(BEA):
     def __init__(self):
         super().__init__()
         self.dataset = 'IIP'
+
+    def show_tables(self):
+        '''
+        show list of tables tied to given datasaet
+        '''
+        return pd.DataFrame([{'table': 'One Table Available'}])
 
 class MNE(BEA):
     '''
@@ -265,6 +277,12 @@ class MNE(BEA):
         super().__init__()
         self.dataset = 'MNE'
 
+    def show_tables(self):
+        '''
+        show list of tables tied to given datasaet
+        '''
+        return pd.DataFrame([{'table': 'One Table Available'}])
+
 class IntlServTrade(BEA):
     '''
     issue with table method
@@ -272,6 +290,20 @@ class IntlServTrade(BEA):
     def __init__(self):
         super().__init__()
         self.dataset = 'IntlServTrade'
+
+    def show_tables(self):
+        '''
+        show list of tables tied to given datasaet
+        '''
+        if self.dataset is None:
+            return 'Method Not Allowed with this Dataset'
+        endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TypeOfService"}'
+        response = requests.get(endpoint)
+        try:
+            resp = response.json()['BEAAPI']['Results']['ParamValue']
+        except:
+            resp = response
+        return resp
 
 
 

@@ -13,7 +13,7 @@ bea = BEA()
 datasets_df = pd.DataFrame(bea.meta.get_available_data_sets()['BEAAPI']['Results']['Dataset'])
 datasets_df = convert_dataset_to_method(datasets_df)
 
-st.header("Stream Lit Display of BEA Website")
+st.header("Bureau of Economic Analysis - Visualization")
 
 dataset_name = st.selectbox('Choose Dataset', datasets_df)
 if not dataset_name is None:
