@@ -241,7 +241,19 @@ class Regional(BEA):
                 try:
                     return response.json()['BEAAPI']['Results']['Data']
                 except:
-                    return response
+                    endpoint = (self.url
+                    + f'&METHOD={METHOD["get_data"]}'
+                    + f'&DATASETNAME={self.dataset}'
+                    + f'&TableName={table_id}'
+                    + f'&GeoFips=state'
+                    + f'&LineCode={line_code}'
+                    + f'&year={year}'
+                    + f'&frequency={freq}')
+                    response = requests.get(endpoint)
+                    try:
+                        return response.json()['BEAAPI']['Results']['Data']
+                    except: 
+                        return response.json()
 
 class FixedAssets(BEA):
     '''

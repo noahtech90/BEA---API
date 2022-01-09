@@ -67,7 +67,7 @@ def county_chloropleth(df):
         counties = json.load(response)
     
     min_value = df['DataValue'].min()
-    max_value = df['DataValue'].max() * .8
+    max_value = df['DataValue'].max() * .5
 
     fig = px.choropleth(df, geojson=counties, locations='GeoFips', color='DataValue',
                             color_continuous_scale="greens",
@@ -84,17 +84,20 @@ def state_choropleth(df):
     '''
     clean choropleth data and return graph
     '''
-    df = clean_data(df)
     # filter down to first quarter if data split quarterly
-    df = df[df['TimePeriod'].str[-2:] == 'Q1']
-    if len(df) > 0:
+    if 'TimePeriod' in df.columns:
+        df = df[df['TimePeriod'].str[-2:] == 'Q1']
         df = df[df['TimePeriod'].str[-2:] == 'Q1']
         df['TimePeriod'] = df['TimePeriod'].str[:-2]
+    
+    if len(df) > 0:
         df = clean_data(df)
         df = df[1:-8]
     
     # Map State Names to Short Hand Code
     df['Code'] = df['GeoName'].map(code)
+    
+    # Generate Figure
     fig = px.choropleth(df,
                         locations='Code',
                         color='DataValue',
