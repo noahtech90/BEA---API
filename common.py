@@ -62,6 +62,7 @@ def county_chloropleth(df):
 
     color scale determined by min and max values available
     '''
+    df = clean_data(df)
     with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
         counties = json.load(response)
     
@@ -77,12 +78,13 @@ def county_chloropleth(df):
         geo_scope='usa', # limit map scope to USA
         margin={"r":0,"t":0,"l":0,"b":0}
         )
-    fig.show()
+    return fig
 
 def state_choropleth(df):
     '''
     clean choropleth data and return graph
     '''
+    df = clean_data(df)
     # filter down to first quarter if data split quarterly
     df = df[df['TimePeriod'].str[-2:] == 'Q1']
     if len(df) > 0:
@@ -102,7 +104,7 @@ def state_choropleth(df):
                         labels={'Income By State'},
                         scope='usa')
     
-    fig.show()
+    return fig
 
 ############################## Utility #################
 def convert_snake_case(s):

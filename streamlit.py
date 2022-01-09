@@ -30,7 +30,21 @@ if not dataset_name is None:
     
     if not table_name is None:
         try:
-            st.write(pd.DataFrame(class_.access_table(table_name)))
+            df = pd.DataFrame(class_.access_table(table_name))
+            st.write(df)
+            visual = st.checkbox('Visualize Data')
+            if visual:
+                loc = st.selectbox("County or State", ['County', 'State'])
+                if loc == 'County':
+                    try:
+                        st.plotly_chart(county_chloropleth(df))
+                    except:
+                        st.error("Issue Visualizing Data")
+                elif loc == 'State':
+                    try:
+                        st.plotly_chart(state_choropleth(df))
+                    except:
+                        st.error('Issue Visualizing Data')
         except: 
             st.error('Cannot Access table')
 

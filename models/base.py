@@ -226,7 +226,22 @@ class Regional(BEA):
         try:
             return response.json()['BEAAPI']['Results']['Data']
         except:
-            return response
+            if response.status_code == 200 and 'Error' in response.json()['BEAAPI'].keys():
+                # will need to make this more versatile but for now just querying for line code
+                line_code = self.get_parameter_values(table_id, 'LineCode')['ParamValue'][0]['Key']
+                endpoint = (self.url
+                + f'&METHOD={METHOD["get_data"]}'
+                + f'&DATASETNAME={self.dataset}'
+                + f'&TableName={table_id}'
+                + f'&GeoFips={geo_fips}'
+                + f'&LineCode={line_code}'
+                + f'&year={year}'
+                + f'&frequency={freq}')
+                response = requests.get(endpoint)
+                try:
+                    return response.json()['BEAAPI']['Results']['Data']
+                except:
+                    return response
 
 class FixedAssets(BEA):
     '''
