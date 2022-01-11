@@ -85,10 +85,10 @@ def state_choropleth(df):
     clean choropleth data and return graph
     '''
     # filter down to first quarter if data split quarterly
-    if 'TimePeriod' in df.columns:
-        df = df[df['TimePeriod'].str[-2:] == 'Q1']
-        df = df[df['TimePeriod'].str[-2:] == 'Q1']
-        df['TimePeriod'] = df['TimePeriod'].str[:-2]
+    #if 'TimePeriod' in df.columns:
+        #df = df[df['TimePeriod'].str[-2:] == 'Q1']
+        #df = df[df['TimePeriod'].str[-2:] == 'Q1']
+        #df['TimePeriod'] = df['TimePeriod'].str[:-2]
     
     if len(df) > 0:
         df = clean_data(df)
