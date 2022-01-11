@@ -26,13 +26,14 @@ if not dataset_name is None:
     table_name = st.selectbox('Select Table', tables)
     if dataset_name == 'regional':
         table_desc = tables[tables['Key'] == table_name]
-        st.header(table_desc['Desc'].iloc[0])
+        st.header(table_desc['Desc'].iloc[0]) 
     
     if not table_name is None:
         try:
             df = pd.DataFrame(class_.access_table(table_name))
             st.write(df)
             visual = st.checkbox('Visualize Data')
+            st.subheader(table_desc['Desc'].iloc[0]) 
             if visual:
                 loc = st.selectbox("County or State", ['County', 'State'])
                 if loc == 'County':

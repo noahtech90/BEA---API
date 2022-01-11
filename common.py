@@ -90,7 +90,7 @@ def state_choropleth(df):
         #df = df[df['TimePeriod'].str[-2:] == 'Q1']
         #df['TimePeriod'] = df['TimePeriod'].str[:-2]
     
-    if len(df) > 0:
+    if len(df) == 60:
         df = clean_data(df)
         df = df[1:-8]
     
