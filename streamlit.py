@@ -27,10 +27,10 @@ if not dataset_name is None:
     if dataset_name == 'regional':
         table_desc = tables[tables['Key'] == table_name]
         st.header(table_desc['Desc'].iloc[0]) 
-    
     if not table_name is None:
+        year = st.selectbox('Year to Access Data', YEARS)
         try:
-            df = pd.DataFrame(class_.access_table(table_name))
+            df = pd.DataFrame(class_.access_table(table_id=table_name, year=year))
             st.write(df)
             visual = st.checkbox('Visualize Data')
             st.subheader(table_desc['Desc'].iloc[0]) 

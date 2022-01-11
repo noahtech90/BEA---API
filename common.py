@@ -70,7 +70,7 @@ def county_chloropleth(df):
     max_value = df['DataValue'].max() * .5
 
     fig = px.choropleth(df, geojson=counties, locations='GeoFips', color='DataValue',
-                            color_continuous_scale="greens",
+                            color_continuous_scale="spectral_r",
                             range_color=(min_value, max_value),
                             scope="usa",
                             )

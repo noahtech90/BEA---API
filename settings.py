@@ -78,3 +78,5 @@ code = {'Alabama': 'AL',
         'West Virginia': 'WV',
         'Wisconsin': 'WI',
         'Wyoming': 'WY'}
+
+YEARS = range(1970, CURRENT_YEAR)
