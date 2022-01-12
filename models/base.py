@@ -139,40 +139,9 @@ class NIPA(BEA):
         super().__init__()
         self.dataset = 'NIPA'
 
-    def income_per_capita(df, year):
-        '''
-        County view of income per capita in the US
-
-        data available starting around 1990???
-        '''
-        with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
-            counties = json.load(response)
-
-        def clean_data(df):
-            df['DataValue'] = df['DataValue'].apply(lambda x: x.replace(",",""))
-            df['DataValue'] = df['DataValue'].apply(lambda x: x.replace("(NA)", "0"))
-            df['DataValue'] = df['DataValue'].astype('int')
-            df['DataValue'] = df['DataValue'].apply(lambda x: x * (1.0232)**(2020 - int(year))) 
-            return df
-
-        df = clean_data(df)
-
-        fig = px.choropleth(df, geojson=counties, locations='GeoFips', color='DataValue',
-                                color_continuous_scale="greens",
-                                range_color=(0, 100000),
-                                scope="usa",
-                                labels={'inc':'income per capital'},
-                                title='US Income Per Capita By County'
-                                )
-        fig.update_layout(
-            geo_scope='usa', # limite map scope to USA
-            margin={"r":0,"t":0,"l":0,"b":0}
-        )
-        fig.show()
-
 class NIUnderlyingDetail(BEA):
     '''
-    some crap
+    not sure
     '''
     def __init__(self):
         super().__init__()
@@ -188,7 +157,7 @@ class InputOutput(BEA):
 
 class GDPbyIndustry(BEA):
     '''
-    some crap
+    GDP by Industry data
     '''
     def __init__(self):
         super().__init__()
@@ -196,7 +165,7 @@ class GDPbyIndustry(BEA):
 
 class UnderlyingGDPbyIndustry(BEA):
     '''
-    some crap
+    not sure
     '''
     def __init__(self):
         super().__init__()
@@ -204,7 +173,7 @@ class UnderlyingGDPbyIndustry(BEA):
 
 class Regional(BEA):
     '''
-    issue with table method
+    Regional data on various economic stats in US
     '''
     def __init__(self):
         super().__init__()
@@ -214,6 +183,17 @@ class Regional(BEA):
         '''
         acessing table data for given dataset
         '''
+        endpoint = {
+            'METHOD': METHOD["get_data"],
+            'DATASETNAME': self.dataset,
+            'TableName': table_id,
+            'GeoFips': geo_fips,
+            'LineCode': line_code,
+            'year': year,
+            'frequency': freq
+
+
+        }
         endpoint = (self.url
         + f'&METHOD={METHOD["get_data"]}'
         + f'&DATASETNAME={self.dataset}'
