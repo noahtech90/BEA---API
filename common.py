@@ -10,7 +10,7 @@ from re import sub
 
 def time_frame(range_num = 10):
     '''
-    function to return range of numbers for 
+    generates range of numbers ending in current year
     '''
     year_range = range(CURRENT_YEAR - range_num, CURRENT_YEAR)
     return year_range
@@ -21,7 +21,7 @@ def clean_data(df):
     df['DataValue'] = df['DataValue'].astype('float')
     return df
 
-def time_frame_data(db_object, table_id, years, freq='A', iloc=0):
+def access_table_by_year(db_object, table_id, years, freq='A', iloc=0):
     '''
     access data over period of times
     '''
@@ -35,26 +35,6 @@ def time_frame_data(db_object, table_id, years, freq='A', iloc=0):
     return df
 
 ################ Visuals ############################
-
-def private_investment_us(bea):
-    columns = pd.DataFrame(bea.nipa.access_table_data(
-        table_id='T50203', 
-        freq='A', 
-        year=1995)).columns
-
-
-    gross_domestic_investment =  pd.DataFrame(columns=columns)
-    year_range = time_frame()
-
-    for year in year_range:
-        df = pd.DataFrame(bea.nipa.access_table_data(
-            table_id='T50203', 
-            freq='A', 
-            year=year)).iloc[0]
-        gross_domestic_investment = gross_domestic_investment.append(df)
-    gross_domestic_investment = clean_data(gross_domestic_investment)
-    gross_domestic_investment = gross_domestic_investment.rename(columns={'DataValue': 'Investment', 'TimePeriod': 'Year'})
-    gross_domestic_investment.plot.line(x='Year', y='Investment')
 
 def county_chloropleth(df):
     '''
