@@ -20,24 +20,24 @@ dataset_name = st.selectbox('Choose Dataset', datasets_df)
 if not dataset_name is None:
     class_ = getattr(bea, dataset_name)
     tables = to_df(class_.show_tables())
-    table_name = st.selectbox('Select Table', tables)
+    table_name = st.selectbox('Select Table', tables['Desc'])
     if dataset_name == 'regional':
-        table_desc = tables[tables['Key'] == table_name]
-        st.header(table_desc['Desc'].iloc[0]) 
+        table_id = tables[tables['Desc'] == table_name]['Key'].iloc[0]
+        st.header(table_name) 
     if not table_name is None:
         # Show Years tied to data
-        year_df = to_df(class_.get_parameter_values(table_name, 'year')['ParamValue'])
+        year_df = to_df(class_.get_parameter_values(table_id, 'year')['ParamValue'])
         year = st.selectbox('Year to Access Data', year_df)
         try:
-            df = pd.DataFrame(class_.access_table(table_id=table_name, year=year))
+            df = pd.DataFrame(class_.access_table(table_id=table_id, year=year))
             st.write(df)
             visual = st.checkbox('Visualize Data')
-            st.subheader(table_desc['Desc'].iloc[0]) 
+            st.subheader(table_name) 
             if visual:
                 try:
                     st.plotly_chart(generate_visualization(df))
                 except:
                     st.error('Issue Visualizing Data')
         except: 
-            st.error(class_.access_table(table_id=table_name, year=year))
+            st.error(class_.access_table(table_id=table_id, year=year))
 
