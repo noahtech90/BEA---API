@@ -25,7 +25,9 @@ if not dataset_name is None:
         table_desc = tables[tables['Key'] == table_name]
         st.header(table_desc['Desc'].iloc[0]) 
     if not table_name is None:
-        year = st.selectbox('Year to Access Data', YEARS)
+        # Show Years tied to data
+        year_df = to_df(class_.get_parameter_values(table_name, 'year')['ParamValue'])
+        year = st.selectbox('Year to Access Data', year_df)
         try:
             df = pd.DataFrame(class_.access_table(table_id=table_name, year=year))
             st.write(df)
