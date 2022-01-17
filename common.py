@@ -47,7 +47,7 @@ def county_chloropleth(df):
         counties = json.load(response)
     
     min_value = df['DataValue'].min()
-    max_value = df['DataValue'].max() * .5
+    max_value = df['DataValue'].max()
 
     fig = px.choropleth(df, geojson=counties, locations='GeoFips', color='DataValue',
                             color_continuous_scale="spectral_r",
@@ -114,3 +114,19 @@ def to_df(data):
     convert to dataframe
     '''
     return pd.DataFrame(data)
+
+def dict_to_url(endpoint_dict: dict) -> str:
+    '''
+    convert endpoint dictionary to url used to query api
+    '''
+    endpoint = str(endpoint_dict).replace(':', '=').replace('{', '').replace('}', '').replace("'", '').replace(',', '').replace(' ', '')
+    keys = endpoint_dict.keys()
+    for key in keys:
+        position = endpoint.find(key)
+        beg = endpoint[:position]
+        end = endpoint[position:]
+        endpoint = beg + '&' + end
+    
+    # Above Adds Unncesary & to first Method
+    endpoint = endpoint[1:]
+    return endpoint

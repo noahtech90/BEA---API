@@ -191,8 +191,6 @@ class Regional(BEA):
             'LineCode': line_code,
             'year': year,
             'frequency': freq
-
-
         }
         endpoint = (self.url
         + f'&METHOD={METHOD["get_data"]}'

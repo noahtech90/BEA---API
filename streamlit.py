@@ -1,8 +1,7 @@
 
 import streamlit as st
 import pandas as pd
-from common import time_frame_data
-from common import clean_data, time_frame, time_frame_data, county_chloropleth, state_choropleth, to_df, convert_dataset_to_method
+from common import clean_data, time_frame, county_chloropleth, state_choropleth, to_df, convert_dataset_to_method
 from urllib.request import urlopen
 import plotly.graph_objects as go
 from settings import *
