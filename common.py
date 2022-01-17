@@ -18,6 +18,7 @@ def time_frame(range_num = 10):
 def clean_data(df):
     df['DataValue'] = df['DataValue'].apply(lambda x: x.replace(",",""))
     df['DataValue'] = df['DataValue'].apply(lambda x: x.replace("(NA)", "0"))
+    df['DataValue'] = df['DataValue'].apply(lambda x: x.replace("(D)", "0"))
     df['DataValue'] = df['DataValue'].astype('float')
     return df
 
@@ -35,6 +36,20 @@ def access_table_by_year(db_object, table_id, years, freq='A', iloc=0):
     return df
 
 ################ Visuals ############################
+
+def generate_visualization(df: pd.DataFrame) -> px.choropleth:
+    '''
+    determines visualization based on dataframe contents
+
+    *** this needs a hard revamp just testing funcionality
+    '''
+    try:
+        if len(df) <= 60:
+            return state_choropleth(df)
+        else:
+            return county_chloropleth(df)
+    except:
+        'error'
 
 def county_chloropleth(df):
     '''
@@ -128,5 +143,4 @@ def dict_to_url(endpoint_dict: dict) -> str:
         endpoint = beg + '&' + end
     
     # Above Adds Unncesary & to first Method
-    endpoint = endpoint[1:]
     return endpoint

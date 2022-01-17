@@ -1,11 +1,9 @@
 
 import streamlit as st
 import pandas as pd
-from common import clean_data, time_frame, county_chloropleth, state_choropleth, to_df, convert_dataset_to_method
-from urllib.request import urlopen
+from common import  generate_visualization, time_frame,  to_df, convert_dataset_to_method
 import plotly.graph_objects as go
 from settings import *
-import plotly.express as px
 from models.base import BEA
 
 bea = BEA()
@@ -34,17 +32,10 @@ if not dataset_name is None:
             visual = st.checkbox('Visualize Data')
             st.subheader(table_desc['Desc'].iloc[0]) 
             if visual:
-                loc = st.selectbox("County or State", ['County', 'State'])
-                if loc == 'County':
-                    try:
-                        st.plotly_chart(county_chloropleth(df))
-                    except:
-                        st.error("Issue Visualizing Data")
-                elif loc == 'State':
-                    try:
-                        st.plotly_chart(state_choropleth(df))
-                    except:
-                        st.error('Issue Visualizing Data')
+                try:
+                    st.plotly_chart(generate_visualization(df))
+                except:
+                    st.error('Issue Visualizing Data')
         except: 
-            st.error('Cannot Access table')
+            st.error(class_.access_table(table_id=table_name, year=year))
 
