@@ -144,3 +144,13 @@ def dict_to_url(endpoint_dict: dict) -> str:
     
     # Above Adds Unncesary & to first Method
     return endpoint
+
+    def normalize_access_table_columns(df: pd.DataFrame) => pd.DataFrame:
+        '''
+        Ensure columns names of various name formats normalize to standard
+
+        Description => Desc
+
+        '''
+        pass
+

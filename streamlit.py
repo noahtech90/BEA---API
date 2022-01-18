@@ -23,7 +23,7 @@ if not dataset_name is None:
     table_name = st.selectbox('Select Table', tables['Desc'])
     if dataset_name == 'regional':
         table_id = tables[tables['Desc'] == table_name]['Key'].iloc[0]
-        st.header(table_name) 
+        st.write(f"Accessing Table {table_id}")
     if not table_name is None:
         # Show Years tied to data
         year_df = to_df(class_.get_parameter_values(table_id, 'year')['ParamValue'])
