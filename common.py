@@ -134,6 +134,8 @@ def dict_to_url(endpoint_dict: dict) -> str:
     '''
     convert endpoint dictionary to url used to query api
     '''
+    #invalid_chars = [(':', '='), ('{', ''), ('}', ''), ("'", ''), (',', ''), (' ', '')]
+    #TODO refactor below using list of replacements
     endpoint = str(endpoint_dict).replace(':', '=').replace('{', '').replace('}', '').replace("'", '').replace(',', '').replace(' ', '')
     keys = endpoint_dict.keys()
     for key in keys:
