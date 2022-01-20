@@ -1,7 +1,7 @@
 
 import streamlit as st
 import pandas as pd
-from common import  generate_visualization, time_frame,  to_df, convert_dataset_to_method
+from common import  generate_visualization, time_frame,  to_df, convert_dataset_to_method, normalize_access_table_columns
 import plotly.graph_objects as go
 from settings import *
 from models.base import BEA
@@ -19,11 +19,13 @@ st.header("Bureau of Economic Analysis - Visualization")
 dataset_name = st.selectbox('Choose Dataset', datasets_df)
 if not dataset_name is None:
     class_ = getattr(bea, dataset_name)
-    tables = to_df(class_.show_tables())
+    tables = normalize_access_table_columns(to_df(class_.show_tables()))
+    tables = normalize_access_table_columns(tables)
+    
     table_name = st.selectbox('Select Table', tables['Desc'])
-    if dataset_name == 'regional':
-        table_id = tables[tables['Desc'] == table_name]['Key'].iloc[0]
-        st.write(f"Accessing Table {table_id}")
+    # Set Table Key
+    table_id = tables[tables['Desc'] == table_name]['Key'].iloc[0]
+    st.subheader(table_name) 
     if not table_name is None:
         # Show Years tied to data
         year_df = to_df(class_.get_parameter_values(table_id, 'year')['ParamValue'])
@@ -32,7 +34,7 @@ if not dataset_name is None:
             df = pd.DataFrame(class_.access_table(table_id=table_id, year=year))
             st.write(df)
             visual = st.checkbox('Visualize Data')
-            st.subheader(table_name) 
+
             if visual:
                 try:
                     st.plotly_chart(generate_visualization(df))
