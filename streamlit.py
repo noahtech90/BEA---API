@@ -28,8 +28,11 @@ if not dataset_name is None:
     st.subheader(table_name) 
     if not table_name is None:
         # Show Years tied to data
-        year_df = to_df(class_.get_parameter_values(table_id, 'year')['ParamValue'])
-        year = st.selectbox('Year to Access Data', year_df)
+        try:
+            year_df = to_df(class_.get_parameter_values(table_id, 'year')['ParamValue'])
+            year = st.selectbox('Year to Access Data', year_df)
+        except:
+            year = st.selectbox('Year to Access Data', YEARS)
         try:
             df = pd.DataFrame(class_.access_table(table_id=table_id, year=year))
             st.write(df)

@@ -140,6 +140,7 @@ class NIPA(BEA):
         super().__init__()
         self.dataset = 'NIPA'
 
+
 class NIUnderlyingDetail(BEA):
     '''
     not sure
