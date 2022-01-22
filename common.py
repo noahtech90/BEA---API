@@ -153,7 +153,9 @@ def normalize_access_table_columns(df: pd.DataFrame) -> pd.DataFrame:
 
     Description => Desc
     '''
+    print(df)
     df = df.rename(columns={"Description": "Desc"})
     df = df.rename(columns={"TableName": "Key"})
+    df = df.rename(columns={"TableNumber": "Key"})
     return df
 
