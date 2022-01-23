@@ -30,6 +30,8 @@ class BEA:
         try:
             return response.json()['BEAAPI']['Results']['Data']
         except:
+            print(response)
+            print(response.json())
             return response
 
     def show_tables(self):
@@ -148,6 +150,21 @@ class NIUnderlyingDetail(BEA):
     def __init__(self):
         super().__init__()
         self.dataset = 'NIUnderlyingDetail'
+
+    def access_table(self, table_id, freq='Q', year=2020):
+        '''
+        acessing table data for given dataset
+        '''
+        endpoint = (self.url
+        + f'&METHOD={METHOD["get_data"]}'
+        + f'&DATASETNAME={self.dataset}'+ f'&TableName={table_id}'
+        + f'&year={year}'
+        + f'&frequency={freq}')
+        response = requests.get(endpoint)
+        try:
+            return response.json()['BEAAPI']['Results']['Data']
+        except:
+            return response
 
 class InputOutput(BEA):
     '''
