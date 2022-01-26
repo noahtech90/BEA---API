@@ -30,8 +30,6 @@ class BEA:
         try:
             return response.json()['BEAAPI']['Results']['Data']
         except:
-            print(response)
-            print(response.json())
             return response
 
     def show_tables(self):
@@ -282,7 +280,25 @@ class MNE(BEA):
         '''
         show list of tables tied to given datasaet
         '''
-        return pd.DataFrame([{'table': 'One Table Available'}])
+        return pd.DataFrame([{'table': 'Multinational Enterprises'}])
+
+    def access_table(self, country='650', year=2020, direction_of_investment='Outward', classification='Country'):
+        endpoint = {
+            'METHOD': METHOD["get_data"],
+            'DATASETNAME': self.dataset,
+            'Country': country,
+            'Classification': classification,
+            'year': year,
+            'DirectionOfInvestment': direction_of_investment,
+        }
+        url = (self.url + dict_to_url(endpoint))
+        response = requests.get(url)
+        try:
+            return response.json()['BEAAPI']['Results']['Data']
+        except:
+            import ipdb;ipdb.set_trace()
+            return response
+
 
 class IntlServTrade(BEA):
     '''
