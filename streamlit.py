@@ -22,9 +22,16 @@ if not dataset_name is None:
     tables = normalize_access_table_columns(to_df(class_.show_tables()))
     tables = normalize_access_table_columns(tables)
     
-    table_name = st.selectbox('Select Table', tables['Desc'])
-    # Set Table Key
-    table_id = tables[tables['Desc'] == table_name]['Key'].iloc[0]
+    try:
+        table_name = st.selectbox('Select Table', tables['Desc'])
+        # Set Table Key
+        table_id = tables[tables['Desc'] == table_name]['Key'].iloc[0]
+    except:
+        table_name = 'Single Table'
+        table_id = 1
+        #TODO: This is super dumb solution need to think of something better
+        # maybe can be some meta data within class that informs path chosen down here
+        # 
     st.subheader(table_name) 
     if not table_name is None:
         # Show Years tied to data
@@ -33,7 +40,8 @@ if not dataset_name is None:
             year = st.selectbox('Year to Access Data', year_df)
         except:
             year = st.selectbox('Year to Access Data', YEARS)
-        try:
+            
+        if table_id != 1:
             df = pd.DataFrame(class_.access_table(table_id=table_id, year=year))
             st.write(df)
             visual = st.checkbox('Visualize Data')
@@ -43,6 +51,13 @@ if not dataset_name is None:
                     st.plotly_chart(generate_visualization(df))
                 except:
                     st.error('Issue Visualizing Data')
-        except: 
-            st.error(class_.access_table(table_id=table_id, year=year))
+        else:
+            # Attempting to Access Single Table Datasets
+            try:
+                df = pd.DataFrame(class_.access_table(year=year))
+                st.write(df)
+            except:
+                st.error("Something went wrong")
+
+
 

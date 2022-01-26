@@ -158,10 +158,5 @@ def normalize_access_table_columns(df: pd.DataFrame) -> pd.DataFrame:
         df = df.rename(columns={"Description": "Desc"})
         df = df.rename(columns={"TableName": "Key"})
         df = df.rename(columns={"TableNumber": "Key"})
-    else:
-        print(df)
-        import ipdb;ipdb.set_trace()
-        df.reset_index(inplace=True)
-        df = df.rename(columns = {'index':'Key'})
     return df
 

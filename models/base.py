@@ -296,7 +296,6 @@ class MNE(BEA):
         try:
             return response.json()['BEAAPI']['Results']['Data']
         except:
-            import ipdb;ipdb.set_trace()
             return response
 
 
