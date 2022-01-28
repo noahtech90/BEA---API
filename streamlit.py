@@ -15,8 +15,9 @@ datasets_df = convert_dataset_to_method(datasets_df)
 
 # Header
 st.header("Bureau of Economic Analysis - Visualization")
+dataset_desc = st.selectbox('Choose Dataset', datasets_df['DatasetDescription'])
+dataset_name = datasets_df[datasets_df['DatasetDescription'] == dataset_desc]['DatasetName'].iloc[0]
 
-dataset_name = st.selectbox('Choose Dataset', datasets_df)
 if not dataset_name is None:
     class_ = getattr(bea, dataset_name)
     tables = normalize_access_table_columns(to_df(class_.show_tables()))
