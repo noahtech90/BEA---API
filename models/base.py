@@ -298,6 +298,15 @@ class MNE(BEA):
         except:
             return response
 
+    def get_parameter_values(self, parameter_name):
+        endpoint = (self.url 
+        + f'&METHOD={METHOD["parameter_values"]}' 
+        + f'&DATASETNAME={self.dataset}'
+        + f'&ParameterName={parameter_name}')
+        response = requests.get(endpoint)
+        resp = response.json()['BEAAPI']['Results']
+        return resp
+
 
 class IntlServTrade(BEA):
     '''

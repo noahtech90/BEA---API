@@ -8,7 +8,7 @@ BASE_URL = f'https://apps.bea.gov/api/data?'+ f'&USERID={api_key}'
 METHOD = {'none': None, 
         'get_data': 'GETDATA', 
         'parameter_value_filt': 'GetParameterValuesFiltered', 
-        'parameter_values': 'GETPARAMETERVALUES', 
+        'parameter_values': 'GetParameterValues', 
         'datasets': 'GETDATASETLIST', 
         'parameter_list': 'getparameterlist'
         }

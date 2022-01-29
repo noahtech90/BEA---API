@@ -28,7 +28,7 @@ if not dataset_name is None:
         # Set Table Key
         table_id = tables[tables['Desc'] == table_name]['Key'].iloc[0]
     except:
-        table_name = 'Single Table'
+        table_name = dataset_desc
         table_id = 1
         #TODO: This is super dumb solution need to think of something better
         # maybe can be some meta data within class that informs path chosen down here
@@ -40,7 +40,11 @@ if not dataset_name is None:
             year_df = to_df(class_.get_parameter_values(table_id, 'year')['ParamValue'])
             year = st.selectbox('Year to Access Data', year_df)
         except:
-            year = st.selectbox('Year to Access Data', YEARS)
+            try:
+                year_df = to_df(class_.get_parameter_values(parameter_name='Year')['ParamValue'])
+                year = st.selectbox('Year to Access Data', year_df)
+            except:
+                year = st.selectbox('Year to Access Data', YEARS)
             
         if table_id != 1:
             df = pd.DataFrame(class_.access_table(table_id=table_id, year=year))
