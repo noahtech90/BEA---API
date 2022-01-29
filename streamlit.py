@@ -41,7 +41,7 @@ if not dataset_name is None:
             year = st.selectbox('Year to Access Data', year_df)
         except:
             try:
-                year_df = to_df(class_.get_parameter_values(parameter_name='Year')['ParamValue'])
+                year_df = to_df(class_.get_parameter_values_nonfiltered(parameter_name='Year')['ParamValue'])
                 year = st.selectbox('Year to Access Data', year_df)
             except:
                 year = st.selectbox('Year to Access Data', YEARS)
