@@ -36,15 +36,20 @@ if not dataset_name is None:
     st.subheader(table_name) 
     if not table_name is None:
         # Show Years tied to data
+        # TODO: Refactor and encapsulate below functionality into function
         try:
             year_df = to_df(class_.get_parameter_values(table_id, 'year')['ParamValue'])
             year = st.selectbox('Year to Access Data', year_df)
         except:
+            year_df = to_df(class_.get_parameter_values_nonfiltered(parameter_name='Year')['ParamValue'])
             try:
-                year_df = to_df(class_.get_parameter_values_nonfiltered(parameter_name='Year')['ParamValue'])
-                year = st.selectbox('Year to Access Data', year_df)
+                table_row = year_df[year_df['TableName'] == table_id]
+                first_year = table_row['FirstAnnualYear'][0]
+                last_year = table_row['LastAnnualYear'][0]
+                year_range = range(int(first_year), int(last_year))
+                year = st.selectbox('Year to Access Data', year_range)
             except:
-                year = st.selectbox('Year to Access Data', YEARS)
+                year = st.selectbox('Years to Access Data', year_df)
             
         if table_id != 1:
             df = pd.DataFrame(class_.access_table(table_id=table_id, year=year))

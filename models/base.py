@@ -17,7 +17,7 @@ class BEA:
         self.url = BASE_URL
         self.dataset = None
 
-    def access_table(self, table_id, freq='A', year=2020):
+    def access_table(self, table_id, year, freq='A', **kwargs):
         '''
         acessing table data for given dataset
         '''
@@ -33,7 +33,14 @@ class BEA:
         try:
             return response.json()['BEAAPI']['Results']['Data']
         except:
-            return response
+            # Attempt to obtain quarterly data if yearly not available
+            endpoint['frequency'] = 'Q'
+            url = (self.url + dict_to_url(endpoint))
+            response = requests.get(url)
+            try:
+                return response.json()['BEAAPI']['Results']['Data']
+            except:
+                return response
 
     def show_tables(self):
         '''
@@ -81,7 +88,17 @@ class BEA:
         }
         url = (self.url + dict_to_url(endpoint))
         response = requests.get(url)
-        resp = response.json()['BEAAPI']['Results']
+        try:
+            resp = response.json()['BEAAPI']['Results']
+        except:
+            del endpoint['TableName']
+            endpoint['TableId'] = table_id
+            url = (self.url + dict_to_url(endpoint))
+            response = requests.get(url)
+            try:
+                resp = response.json()['BEAAPI']['Results']
+            except:
+                resp = response
         return resp
 
     def get_parameter_values_nonfiltered(self, parameter_name):
@@ -171,30 +188,17 @@ class NIPA(BEA):
 
 class NIUnderlyingDetail(BEA):
     '''
-    not sure
+    This dataset contains underlying detail data from the National
+    Income and Product Accounts which include measures of the value and composition of U.S.production
+    and the incomes generated in producing it.
     '''
     def __init__(self):
         super().__init__()
         self.dataset = 'NIUnderlyingDetail'
 
-    def access_table(self, table_id, freq='Q', year=2020):
-        '''
-        acessing table data for given dataset
-        '''
-        endpoint = (self.url
-        + f'&METHOD={METHOD["get_data"]}'
-        + f'&DATASETNAME={self.dataset}'+ f'&TableName={table_id}'
-        + f'&year={year}'
-        + f'&frequency={freq}')
-        response = requests.get(endpoint)
-        try:
-            return response.json()['BEAAPI']['Results']['Data']
-        except:
-            return response
-
 class InputOutput(BEA):
     '''
-    Commodity tables detailing comodities listed by industry
+    Commodity tables detailing commodities listed by industry
     '''
     def __init__(self):
         super().__init__()
@@ -210,11 +214,36 @@ class GDPbyIndustry(BEA):
 
 class UnderlyingGDPbyIndustry(BEA):
     '''
-    not sure
+    Underlying GDP by Industry
     '''
     def __init__(self):
         super().__init__()
         self.dataset = 'UnderlyingGDPbyIndustry'
+
+    def access_table(self, table_id, year, freq='A'):
+            '''
+            acessing table data for given dataset
+            '''
+            endpoint = {
+                'METHOD': METHOD["get_data"],
+                'DATASETNAME': self.dataset,
+                'TableName': table_id,
+                'year': year,
+                'frequency': freq
+            }
+            url = (self.url + dict_to_url(endpoint))
+            response = requests.get(url)
+            try:
+                return response.json()['BEAAPI']['Results']['Data']
+            except:
+                # Attempt to obtain quarterly data if yearly not available
+                endpoint['frequency'] = 'Q'
+                url = (self.url + dict_to_url(endpoint))
+                response = requests.get(url)
+                try:
+                    return response.json()['BEAAPI']['Results']['Data']
+                except:
+                    return response
 
 class Regional(BEA):
     '''
