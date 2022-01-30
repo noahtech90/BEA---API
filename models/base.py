@@ -21,12 +21,15 @@ class BEA:
         '''
         acessing table data for given dataset
         '''
-        endpoint = (self.url
-        + f'&METHOD={METHOD["get_data"]}'
-        + f'&DATASETNAME={self.dataset}'+ f'&TableName={table_id}'
-        + f'&year={year}'
-        + f'&frequency={freq}')
-        response = requests.get(endpoint)
+        endpoint = {
+            'METHOD': METHOD["get_data"],
+            'DATASETNAME': self.dataset,
+            'TableName': table_id,
+            'year': year,
+            'frequency': freq
+        }
+        url = (self.url + dict_to_url(endpoint))
+        response = requests.get(url)
         try:
             return response.json()['BEAAPI']['Results']['Data']
         except:
@@ -34,45 +37,61 @@ class BEA:
 
     def show_tables(self):
         '''
-        show list of tables tied to given datasaet
+        show list of tables tied to given dataset
         '''
         if self.dataset is None:
             return 'Method Not Allowed with this Dataset'
-        endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TableID"}'
-        response = requests.get(endpoint)
+        endpoint = {
+            'METHOD': METHOD["parameter_values"],
+            'DATASETNAME': self.dataset,
+            'ParameterName': "TableId",
+        }
+        url = (self.url + dict_to_url(endpoint))
+        response = requests.get(url)
         try:
             resp = response.json()['BEAAPI']['Results']['ParamValue']
         except:
-            endpoint = self.url + f'&METHOD={METHOD["parameter_values"]}' + f'&DATASETNAME={self.dataset}'+ f'&ParameterName={"TableName"}'
-            response = requests.get(endpoint)  
+            # Some Datasets Use table name as opposed to table id parameter
+            endpoint['ParameterName'] = 'TableName'
+            url = (self.url + dict_to_url(endpoint))
+            response = requests.get(url)
             try:
                 resp = response.json()['BEAAPI']['Results']['ParamValue'] 
             except:
+                # return response for debugging if neither of above options work
                 resp = response
         return resp
 
     def get_available_parameters(self):
-        endpoint = self.url + f'&METHOD={METHOD["parameter_list"]}' + f'&DATASETNAME={self.dataset}'
-        response = requests.get(endpoint)
+        endpoint = {
+            'METHOD': METHOD["parameter_list"],
+            'DATASETNAME': self.dataset,
+        }
+        url = (self.url + dict_to_url(endpoint))
+        response = requests.get(url)
         resp = response.json()
         return resp
     
     def get_parameter_values(self, table_id, parameter_name):
-        endpoint = (self.url 
-        + f'&METHOD={METHOD["parameter_value_filt"]}' 
-        + f'&TableName={table_id}' 
-        + f'&DATASETNAME={self.dataset}'
-        + f'&TargetParameter={parameter_name}')
-        response = requests.get(endpoint)
+        endpoint = {
+            'METHOD': METHOD["parameter_value_filt"],
+            'DATASETNAME': self.dataset,
+            'TableName': table_id,
+            'TargetParameter': parameter_name,
+        }
+        url = (self.url + dict_to_url(endpoint))
+        response = requests.get(url)
         resp = response.json()['BEAAPI']['Results']
         return resp
 
     def get_parameter_values_nonfiltered(self, parameter_name):
-        endpoint = (self.url 
-        + f'&METHOD={METHOD["parameter_values"]}' 
-        + f'&DATASETNAME={self.dataset}'
-        + f'&ParameterName={parameter_name}')
-        response = requests.get(endpoint)
+        endpoint = {
+            'METHOD': METHOD["parameter_values"],
+            'DATASETNAME': self.dataset,
+            'ParameterName': parameter_name,
+        }
+        url = (self.url + dict_to_url(endpoint))
+        response = requests.get(url)
         resp = response.json()['BEAAPI']['Results']
         return resp
 
