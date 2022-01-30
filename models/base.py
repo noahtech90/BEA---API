@@ -28,19 +28,27 @@ class BEA:
             'year': year,
             'frequency': freq
         }
+        endpoint.update(kwargs.items())
         url = (self.url + dict_to_url(endpoint))
         response = requests.get(url)
         try:
             return response.json()['BEAAPI']['Results']['Data']
         except:
-            # Attempt to obtain quarterly data if yearly not available
-            endpoint['frequency'] = 'Q'
-            url = (self.url + dict_to_url(endpoint))
-            response = requests.get(url)
             try:
-                return response.json()['BEAAPI']['Results']['Data']
+                del endpoint['TableName']
+                endpoint['TableId'] = table_id
+                url = (self.url + dict_to_url(endpoint))
+                response = requests.get(url)
+                return response.json()['BEAAPI']['Results']
             except:
-                return response
+                # Attempt to obtain quarterly data if yearly not available
+                endpoint['frequency'] = 'Q'
+                url = (self.url + dict_to_url(endpoint))
+                response = requests.get(url)
+                try:
+                    return response.json()['BEAAPI']['Results']['Data']
+                except:
+                    return response
 
     def show_tables(self):
         '''

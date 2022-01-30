@@ -22,6 +22,19 @@ def clean_data(df):
     df['DataValue'] = df['DataValue'].astype('float')
     return df
 
+def generated_year_range_from_df(table_years_df: pd.DataFrame, table_id: str) -> list:
+    '''
+    parameter response for year range produces dataframe listing all table
+    data ranges
+
+    generates year range based off this dataframe
+    '''
+    table_row = table_years_df[table_years_df['TableName'] == table_id]
+    first_year = table_row['FirstAnnualYear'][0]
+    last_year = table_row['LastAnnualYear'][0]
+    year_range = range(int(first_year), int(last_year))
+    return year_range
+
 def access_table_by_year(db_object, table_id, years, freq='A', iloc=0):
     '''
     access data over period of times

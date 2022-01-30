@@ -1,7 +1,13 @@
 
 import streamlit as st
 import pandas as pd
-from common import  generate_visualization, time_frame,  to_df, convert_dataset_to_method, normalize_access_table_columns
+from common import  (
+                    generate_visualization, 
+                    time_frame,  
+                    to_df, 
+                    convert_dataset_to_method, 
+                    normalize_access_table_columns, 
+                    generated_year_range_from_df)
 import plotly.graph_objects as go
 from settings import *
 from models.base import BEA
@@ -43,10 +49,7 @@ if not dataset_name is None:
         except:
             year_df = to_df(class_.get_parameter_values_nonfiltered(parameter_name='Year')['ParamValue'])
             try:
-                table_row = year_df[year_df['TableName'] == table_id]
-                first_year = table_row['FirstAnnualYear'][0]
-                last_year = table_row['LastAnnualYear'][0]
-                year_range = range(int(first_year), int(last_year))
+                year_range = generated_year_range_from_df(year_df, table_id)
                 year = st.selectbox('Year to Access Data', year_range)
             except:
                 year = st.selectbox('Years to Access Data', year_df)
