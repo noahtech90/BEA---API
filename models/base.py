@@ -220,6 +220,25 @@ class GDPbyIndustry(BEA):
         super().__init__()
         self.dataset = 'GDPbyIndustry'
 
+    def access_table(self, table_id, year, freq='A', industry=211):
+        '''
+        acessing table data for given dataset
+        '''
+        endpoint = {
+            'METHOD': METHOD["get_data"],
+            'DATASETNAME': self.dataset,
+            'TableId': table_id,
+            'year': year,
+            'frequency': freq,
+            'industry': industry
+        }
+        url = (self.url + dict_to_url(endpoint))
+        response = requests.get(url)
+        try:
+            return response.json()['BEAAPI']['Results'][0]['Data']
+        except:
+            return response
+
 class UnderlyingGDPbyIndustry(BEA):
     '''
     Underlying GDP by Industry
