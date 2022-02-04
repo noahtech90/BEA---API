@@ -64,7 +64,7 @@ def generate_visualization(df: pd.DataFrame) -> px.choropleth:
     except:
         'error'
 
-def county_chloropleth(df):
+def county_chloropleth(df: pd.DataFrame) -> px.choropleth:
     '''
     creates chloropleth mapping for county data
 
@@ -81,6 +81,7 @@ def county_chloropleth(df):
                             color_continuous_scale="spectral_r",
                             range_color=(min_value, max_value),
                             scope="usa",
+                            lables=df['CL_UNIT'].to_list()
                             )
     fig.update_layout(
         geo_scope='usa', # limit map scope to USA
@@ -88,7 +89,7 @@ def county_chloropleth(df):
         )
     return fig
 
-def state_choropleth(df):
+def state_choropleth(df: pd.DataFrame) -> px.choropleth:
     '''
     clean choropleth data and return graph
     '''

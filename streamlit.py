@@ -61,9 +61,10 @@ if not dataset_name is None:
 
             if visual:
                 try:
+                    st.markdown(f"{table_name} as of {year}")
                     st.plotly_chart(generate_visualization(df))
-                except:
-                    st.error('Issue Visualizing Data')
+                except Exception as e:
+                    st.error(e)
         else:
             # Attempting to Access Single Table Datasets
             try:
